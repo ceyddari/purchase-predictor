@@ -1,0 +1,21 @@
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(120) UNIQUE NOT NULL,
+  age INT NOT NULL CHECK (age BETWEEN 13 AND 100),
+  gender VARCHAR(10),
+  signup_date DATE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS transactions (
+  id SERIAL PRIMARY KEY,
+  user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  amount NUMERIC(10,2) NOT NULL CHECK (amount >= 0),
+  created_at TIMESTAMP NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS predictions (
+  user_id INT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  as_of_date DATE NOT NULL,
+  probability NUMERIC(6,5) NOT NULL CHECK (probability BETWEEN 0 AND 1),
+  will_buy INT NOT NULL CHECK (will_buy IN (0,1))
+);
