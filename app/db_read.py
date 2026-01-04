@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 from sqlalchemy import create_engine
+import tensorflow as tf
+
 
 DB_USER = "postgres"
 DB_PASSWORD = "1234"
@@ -82,6 +84,22 @@ test_idx = idx[split:]
 
 X_train, y_train = X[train_idx], y[train_idx]
 X_test, y_test = X[test_idx], y[test_idx]
+
+# neural network
+model = tf.keras.Sequential(
+    [
+        tf.keras.layers.Input(shape=(X_train.shape[1],)),
+        tf.keras.layers.Dense(8, activation="relu"),
+        tf.keras.layers.Dense(4, activation="relu"),
+        tf.keras.layers.Dense(1, activation="sigmoid"),
+    ]
+)
+
+model.compile(
+    optimizer="adam",
+    loss="binary_crossentropy",
+    metrics=["accuracy"],
+)
 
 
 print(dataset)
