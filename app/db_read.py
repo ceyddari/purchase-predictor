@@ -101,5 +101,28 @@ model.compile(
     metrics=["accuracy"],
 )
 
+# training(fit)
+history = model.fit(X_train, y_train, epochs=30, batch_size=2, verbose=1)
 
-print(dataset)
+# test
+test_loss, test_acc = model.evaluate(X_test, y_test, verbose=0)
+print("Test accuracy:", test_acc)
+
+
+# making predictions
+probs = model.predict(X, verbose=0).flatten()
+
+# 0/1
+preds = (probs >= 0.5).astype(int)
+
+
+# putting predictions in the table
+pred_df = pd.DataFrame(
+    {
+        "user_id": dataset["user_id"].astype(int),
+        "as_of_date": today.date(),
+        "probability": preds.astype(int),
+    }
+)
+
+pred_df.to_sql("predictions", engine, if_exists="replace", index=False)
