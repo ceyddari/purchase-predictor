@@ -67,3 +67,10 @@ python app/db_read.py
 
 4. View predictions in PostgreSQL:
 SELECT * FROM predictions ORDER BY user_id;
+
+
+### Notes:
+
+- The model uses historical data only for feature generation to avoid data leakage.
+- The dataset used is intentionally small for demonstration purposes.
+- The project focuses on building a complete ML pipeline rather than model optimization.
